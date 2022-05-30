@@ -226,7 +226,7 @@ class Assembler:
         if symbol is None and not self.__is_label(instruction):
             return instruction
         address = self.__addresses.get_address(symbol)
-        if address is None: return ''
+        if address is None: return None
         return address
     
     def get_symbol_less_program(self) -> list:
