@@ -30,7 +30,7 @@ class InstructionsParser:
         for line in self.assembly.split('\n'):
             instruction = self.__get_instruction(line)
             if not instruction: continue
-            instructions.append(self.__get_instruction(line))
+            instructions.append(instruction)
         return instructions
 
 class AddressParser:
