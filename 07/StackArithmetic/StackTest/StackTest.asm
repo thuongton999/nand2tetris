@@ -23,12 +23,12 @@ A=A-1
 M=M-D
 D=M
 M=-1
-@StackTest_eq0
+@806ee678-fd35-434f-a142-0791aeba5d48
 D;JEQ
 @SP
 A=M-1
 M=0
-(StackTest_eq0)
+(806ee678-fd35-434f-a142-0791aeba5d48)
 // C_PUSH constant 17
 @17
 D=A
@@ -54,12 +54,12 @@ A=A-1
 M=M-D
 D=M
 M=-1
-@StackTest_eq1
+@d380c787-c0a6-4120-b421-60ce2c4c4ffd
 D;JEQ
 @SP
 A=M-1
 M=0
-(StackTest_eq1)
+(d380c787-c0a6-4120-b421-60ce2c4c4ffd)
 // C_PUSH constant 16
 @16
 D=A
@@ -85,12 +85,12 @@ A=A-1
 M=M-D
 D=M
 M=-1
-@StackTest_eq2
+@9119ba40-3fc0-42ad-ba01-fda679859c58
 D;JEQ
 @SP
 A=M-1
 M=0
-(StackTest_eq2)
+(9119ba40-3fc0-42ad-ba01-fda679859c58)
 // C_PUSH constant 892
 @892
 D=A
@@ -116,12 +116,12 @@ A=A-1
 M=M-D
 D=M
 M=-1
-@StackTest_lt0
+@fc28b211-6311-4c2e-a80e-64b7dc4f2ac2
 D;JLT
 @SP
 A=M-1
 M=0
-(StackTest_lt0)
+(fc28b211-6311-4c2e-a80e-64b7dc4f2ac2)
 // C_PUSH constant 891
 @891
 D=A
@@ -147,12 +147,12 @@ A=A-1
 M=M-D
 D=M
 M=-1
-@StackTest_lt1
+@277d3c36-a408-4c8b-92d1-95b425f69466
 D;JLT
 @SP
 A=M-1
 M=0
-(StackTest_lt1)
+(277d3c36-a408-4c8b-92d1-95b425f69466)
 // C_PUSH constant 891
 @891
 D=A
@@ -178,12 +178,12 @@ A=A-1
 M=M-D
 D=M
 M=-1
-@StackTest_lt2
+@24335378-6b1a-48d4-a62b-0339c1b76fe2
 D;JLT
 @SP
 A=M-1
 M=0
-(StackTest_lt2)
+(24335378-6b1a-48d4-a62b-0339c1b76fe2)
 // C_PUSH constant 32767
 @32767
 D=A
@@ -209,12 +209,12 @@ A=A-1
 M=M-D
 D=M
 M=-1
-@StackTest_gt0
+@84f09c4f-589c-4b03-8c54-a17fda03fc6c
 D;JGT
 @SP
 A=M-1
 M=0
-(StackTest_gt0)
+(84f09c4f-589c-4b03-8c54-a17fda03fc6c)
 // C_PUSH constant 32766
 @32766
 D=A
@@ -240,12 +240,12 @@ A=A-1
 M=M-D
 D=M
 M=-1
-@StackTest_gt1
+@2b88bfe2-8229-43d9-98d1-feacbc228061
 D;JGT
 @SP
 A=M-1
 M=0
-(StackTest_gt1)
+(2b88bfe2-8229-43d9-98d1-feacbc228061)
 // C_PUSH constant 32766
 @32766
 D=A
@@ -271,12 +271,12 @@ A=A-1
 M=M-D
 D=M
 M=-1
-@StackTest_gt2
+@0f9c49a2-ceb8-4e62-8bd0-72faca21fdb4
 D;JGT
 @SP
 A=M-1
 M=0
-(StackTest_gt2)
+(0f9c49a2-ceb8-4e62-8bd0-72faca21fdb4)
 // C_PUSH constant 57
 @57
 D=A
@@ -303,8 +303,7 @@ M=D
 M=M+1
 // add
 @SP
-M=M-1
-A=M
+AM=M-1
 D=M
 A=A-1
 M=M+D
@@ -318,8 +317,7 @@ M=D
 M=M+1
 // sub
 @SP
-M=M-1
-A=M
+AM=M-1
 D=M
 A=A-1
 M=M-D
