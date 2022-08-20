@@ -3,7 +3,6 @@ Hi, sorry for my poor English. I'm from Vietnam and English is not my first lang
 I was try my best to wrote this document in English, hope you can understand it. Enjoy 🥰!
 
 ## **Darkeum**
----
 
 Last night, you just spent a wonderful night with your new wife. Thinking that your life will start to change from here, life will be full of love in a happy little family.
 
@@ -22,7 +21,6 @@ Since then you sink into loneliness, gradually closing yourself. Until meeting y
 The scene returned to the present, the surrounding was still a labyrinth full of human bones, and only a few flickering torches. You calm down, remembering what your father told him about his adventures and his experiences, your only goal right now is to find a way out of this place as soon as possible.
 
 ## **Installation**
----
 ### **Use the provided `.vm` code**
 
 You can use the `VMEmulator` that provided under the `Nand2Tetris/tools` folder to run the `path/to/Darkeum/` folder.
@@ -38,8 +36,6 @@ After that, some `.vm` files will be generated under that folder.
 Then, use the `VMEmulator` that provided under the `Nand2Tetris/tools` folder to run the folder contain all the translated `.vm` file.
 
 ## **How to play 🎮**
-
----
 
 **NOTE ⚡**
 
