@@ -1,0 +1,123 @@
+/**
+    Implementation of the Darkeum game.
+    Basically, the player can move the character around the maze by using the arrow keys
+    or (W) for going up, (A) for going left, (S) for going down and (D) for going left.
+    The player can also press (Q) or (ESC) to quit the game.
+*/
+class Darkeum {
+    field Maze map;             // the maze
+    field Character character;  // the player's character
+    field boolean exit;         // the current state of the game
+
+    /** Constructor */
+    constructor Darkeum new() {
+        let exit = false;                       // initially the game is not over
+        let character = Character.new(0, 0);    // initially the player is at the top-left corner of the maze
+        return this;
+    }
+    
+    method int waitUntilKeyPressed() {
+        // count cycles until user press any key
+        var int cycles;
+        let cycles = 0;
+        while (Keyboard.keyPressed() = 0) {let cycles = cycles + 1;}
+        return cycles;
+    }
+
+    /** Reset the game */
+    method void reset() {
+        do Screen.clearScreen();
+        do map.generate();
+        do character.setLocation(0, 0);
+        
+        do Graphics.printCenter(Graphics.getScreenTextRows()-1, "Me: https://github.com/thuongton999/");
+        do map.draw();
+        do character.draw();
+        return;
+    }
+
+    /** Run the game */
+    method void run() {
+        // start screen and wait for user to press any key
+        do Graphics.drawStartScreen();
+        // use the cycles as seed for the random generator
+        do LCGRandom.setSeed(waitUntilKeyPressed());
+        // create a new maze with 32x16 cells with the random seed
+        let map = Maze.new(Graphics.getScreenCols(), Graphics.getScreenRows()-1); 
+
+        do reset();
+        // the game is running
+        while (~exit) {
+            do update(); 
+        }
+        return;
+    }
+    /** Exit the game */
+    method void shutdown() {
+        do character.dispose();
+        do map.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+    /** Update the state of this game */
+    method void update() {
+        var char key;
+        var int x, y;
+        var Cell current;
+
+        let x = character.getX();
+        let y = character.getY();
+        let current = map.getCell(x, y);
+        // check if the player is at the exit
+        if (map.isExit(x, y)) {
+            do Graphics.drawCongratulations();
+            let exit = true;
+        }
+        // waits for a key to be pressed
+        while (key = 0) {
+            let key = Keyboard.keyPressed();
+            do character.draw();
+        }
+        if ((key = 81) | (key = 140)) { let exit = true; } // q | esc
+        // up arrow | w 
+        if ((key = 131) | (key = 87)) { 
+            if (current.isConnected(Cell.top())) {
+                do character.erase(); 
+                // move up 16 pixels
+                do character.moveUp(16); 
+            }
+        }
+        // down arrow | s
+        if ((key = 133) | (key = 83)) { 
+            if (current.isConnected(Cell.bottom())) {
+                do character.erase(); 
+                // move down 16 pixels
+                do character.moveDown(16); 
+            }
+        }
+        // left arrow | a
+        if ((key = 130) | (key = 65)) { 
+            if (current.isConnected(Cell.left())) {
+                do character.erase(); 
+                // move left 1 column (16 pixels)
+                do character.moveLeft(1); 
+            }
+        }   
+        // right arrow | d
+        if ((key = 132) | (key = 68)) { 
+            if (current.isConnected(Cell.right())) {
+                do character.erase();
+                // move right 1 column (16 pixels)
+                do character.moveRight(1); 
+            }
+        } 
+        do current.draw();
+        
+        // wait for a key to be released
+        while (~(key = 0)) {
+            let key = Keyboard.keyPressed();
+            do character.draw();
+        }
+        return;
+    }
+}

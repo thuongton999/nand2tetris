@@ -1,0 +1,110 @@
+class Character {
+    field int location;
+    field int coordX, coordY;
+    field int width, height;
+
+    /** Constructor */
+    constructor Character new (int column, int row) {
+        let coordX = column;
+        let coordY = row;
+        let width = 1;
+        let height = 16;
+        do setLocation(coordX, coordY);
+        return this;
+    }
+    /** Dispose */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** Set the character's location. */
+    method void setLocation(int column, int row) {
+        if (column < 0) { let column = 0; }
+        else {
+            if ((column+width) > (Graphics.getScreenCols()-1)) {
+                let column = Graphics.getScreenCols()-1;
+            }
+        }
+
+        if (row < 0) { let row = 0; }
+        else {
+            if ((row+height) > (Graphics.getScreenHeight()-1)) {
+                let row = Graphics.getScreenHeight()-1-height;
+            }
+        }
+        
+        let location = column + (row * Graphics.getScreenCols());
+        let coordX = column;
+        let coordY = row;
+        return;
+    }
+    /** Get the character's location in the maze. */
+    method int getY() { return coordY / height; }
+    method int getX() { return coordX; }
+
+    /** Move the character up y pixel */
+    method void moveUp(int y) {
+        do setLocation(coordX, coordY-y);
+        return;
+    }
+    /** Move the character down y pixel */
+    method void moveDown(int y) {
+        do setLocation(coordX, coordY+y);
+        return;
+    }
+    /** Move the character left x column (x*16 pixels) */
+    method void moveLeft(int x) {
+        do setLocation(coordX-x, coordY);
+        return;
+    }
+    /** Move the character right x column (x*16 pixels)*/
+    method void moveRight(int x) {
+        do setLocation(coordX+x, coordY);
+        return;
+    }
+    /** Draws the character on the screen */
+    method void draw() {
+        var int memAddress;
+        let memAddress = 16384+location;
+        do Memory.poke(memAddress+0, -4093);
+        do Memory.poke(memAddress+32, -5131);
+        do Memory.poke(memAddress+64, -4099);
+        do Memory.poke(memAddress+96, -4099);
+        do Memory.poke(memAddress+128, -4098);
+        do Memory.poke(memAddress+160, -4866);
+        do Memory.poke(memAddress+192, -4770);
+        do Memory.poke(memAddress+224, -6835);
+        do Memory.poke(memAddress+256, -3061);
+        do Memory.poke(memAddress+288, -3081);
+        do Memory.poke(memAddress+320, -2533);
+        do Memory.poke(memAddress+352, -4579);
+        do Memory.poke(memAddress+384, -4099);
+        do Memory.poke(memAddress+416, -3085);
+        do Memory.poke(memAddress+448, -1225);
+        do Memory.poke(memAddress+480, -817);
+        return;
+    }
+    /** Erase the character from the screen */
+    method void erase() {
+        var int memAddress;
+        let memAddress = 16384+location;
+        do Memory.poke(memAddress+0, -1);
+        do Memory.poke(memAddress+32, -1);
+        do Memory.poke(memAddress+64, -1);
+        do Memory.poke(memAddress+96, -1);
+        do Memory.poke(memAddress+128, -1);
+        do Memory.poke(memAddress+160, -1);
+        do Memory.poke(memAddress+192, -1);
+        do Memory.poke(memAddress+224, -1);
+        do Memory.poke(memAddress+256, -1);
+        do Memory.poke(memAddress+288, -1);
+        do Memory.poke(memAddress+320, -1);
+        do Memory.poke(memAddress+352, -1);
+        do Memory.poke(memAddress+384, -1);
+        do Memory.poke(memAddress+416, -1);
+        do Memory.poke(memAddress+448, -1);
+        do Memory.poke(memAddress+480, -1);
+        return;
+    }
+}

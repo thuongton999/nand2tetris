@@ -1,0 +1,398 @@
+function Character.new 0
+push constant 5
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 1
+push argument 1
+pop this 2
+push constant 1
+pop this 3
+push constant 16
+pop this 4
+push pointer 0
+push this 1
+push this 2
+call Character.setLocation 3
+pop temp 0
+push pointer 0
+return
+function Character.dispose 0
+push argument 0
+pop pointer 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Character.setLocation 0
+push argument 0
+pop pointer 0
+push argument 1
+push constant 0
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+pop argument 1
+goto IF_END0
+label IF_FALSE0
+push argument 1
+push this 3
+add
+call Graphics.getScreenCols 0
+push constant 1
+sub
+gt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+call Graphics.getScreenCols 0
+push constant 1
+sub
+pop argument 1
+label IF_FALSE1
+label IF_END0
+push argument 2
+push constant 0
+lt
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push constant 0
+pop argument 2
+goto IF_END2
+label IF_FALSE2
+push argument 2
+push this 4
+add
+call Graphics.getScreenHeight 0
+push constant 1
+sub
+gt
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+call Graphics.getScreenHeight 0
+push constant 1
+sub
+push this 4
+sub
+pop argument 2
+label IF_FALSE3
+label IF_END2
+push argument 1
+push argument 2
+call Graphics.getScreenCols 0
+call Math.multiply 2
+add
+pop this 0
+push argument 1
+pop this 1
+push argument 2
+pop this 2
+push constant 0
+return
+function Character.getY 0
+push argument 0
+pop pointer 0
+push this 2
+push this 4
+call Math.divide 2
+return
+function Character.getX 0
+push argument 0
+pop pointer 0
+push this 1
+return
+function Character.moveUp 0
+push argument 0
+pop pointer 0
+push pointer 0
+push this 1
+push this 2
+push argument 1
+sub
+call Character.setLocation 3
+pop temp 0
+push constant 0
+return
+function Character.moveDown 0
+push argument 0
+pop pointer 0
+push pointer 0
+push this 1
+push this 2
+push argument 1
+add
+call Character.setLocation 3
+pop temp 0
+push constant 0
+return
+function Character.moveLeft 0
+push argument 0
+pop pointer 0
+push pointer 0
+push this 1
+push argument 1
+sub
+push this 2
+call Character.setLocation 3
+pop temp 0
+push constant 0
+return
+function Character.moveRight 0
+push argument 0
+pop pointer 0
+push pointer 0
+push this 1
+push argument 1
+add
+push this 2
+call Character.setLocation 3
+pop temp 0
+push constant 0
+return
+function Character.draw 1
+push argument 0
+pop pointer 0
+push constant 16384
+push this 0
+add
+pop local 0
+push local 0
+push constant 0
+add
+push constant 4093
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 32
+add
+push constant 5131
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 64
+add
+push constant 4099
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 96
+add
+push constant 4099
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 128
+add
+push constant 4098
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 160
+add
+push constant 4866
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 192
+add
+push constant 4770
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 224
+add
+push constant 6835
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 256
+add
+push constant 3061
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 288
+add
+push constant 3081
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 320
+add
+push constant 2533
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 352
+add
+push constant 4579
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 384
+add
+push constant 4099
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 416
+add
+push constant 3085
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 448
+add
+push constant 1225
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 480
+add
+push constant 817
+neg
+call Memory.poke 2
+pop temp 0
+push constant 0
+return
+function Character.erase 1
+push argument 0
+pop pointer 0
+push constant 16384
+push this 0
+add
+pop local 0
+push local 0
+push constant 0
+add
+push constant 1
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 32
+add
+push constant 1
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 64
+add
+push constant 1
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 96
+add
+push constant 1
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 128
+add
+push constant 1
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 160
+add
+push constant 1
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 192
+add
+push constant 1
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 224
+add
+push constant 1
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 256
+add
+push constant 1
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 288
+add
+push constant 1
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 320
+add
+push constant 1
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 352
+add
+push constant 1
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 384
+add
+push constant 1
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 416
+add
+push constant 1
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 448
+add
+push constant 1
+neg
+call Memory.poke 2
+pop temp 0
+push local 0
+push constant 480
+add
+push constant 1
+neg
+call Memory.poke 2
+pop temp 0
+push constant 0
+return

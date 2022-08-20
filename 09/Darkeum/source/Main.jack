@@ -1,0 +1,16 @@
+/** Init the Darkeum game and run it*/
+// Due to the limitations of the HACK computer,
+// sometimes the maze generation of the game
+// will fail, because of the heap overflow.
+// In this case, you can try to re-run the game again.
+class Main {
+    function void main () {
+        var Darkeum game;
+        let game = Darkeum.new();
+
+        do game.run();
+        do game.shutdown();
+
+        return;
+    }
+}

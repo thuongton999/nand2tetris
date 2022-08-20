@@ -1,0 +1,102 @@
+/** Cell in the maze */
+class Cell {
+    field int size;         // size of the cell
+    field int x, y;         // position of the cell in the maze
+    field Array neighbours; // neighbours of the cell
+                            // 0 - top, 1 - right, 2 - bottom, 3 - left
+                            // if true, the cell is connected to the neighbour
+                            // else the cell is not connected to the neighbour
+    field boolean visited;  // represents if the cell has been visited
+    
+    /** Construct new cell with no connection with neighbours */
+    constructor Cell new(int row, int col, int s) {
+        let neighbours = Array.new(4);
+        let x = col;
+        let y = row;
+        let size = s;
+        do reset();
+        return this;
+    }
+    method void dispose() {
+        do neighbours.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** Cell directions */
+    function int top() { return 0; }
+    function int right() { return 1; }
+    function int bottom() { return 2; }
+    function int left() { return 3; }
+
+    /** Reset the cell */
+    method void reset() {
+        let neighbours[0] = false;
+        let neighbours[1] = false;
+        let neighbours[2] = false;
+        let neighbours[3] = false;
+        let visited = false;
+        return;
+    }
+
+    /** Draw cell */
+    method void draw() {
+        var int coordX, coordY;
+        let coordX = x * size;
+        let coordY = y * size;
+        // set color to white
+        do Screen.setColor(false);
+        if (~isConnected(Cell.top())) {
+            // draw top border
+            do Screen.drawLine(coordX, coordY, coordX + size - 1, coordY);
+        }
+        if (~isConnected(Cell.right())) {
+            // draw right border
+            do Screen.drawLine(coordX + size - 1, coordY, coordX + size - 1, coordY + size - 1);
+        }
+        if (~isConnected(Cell.bottom())) {
+            // draw bottom border
+            do Screen.drawLine(coordX, coordY + size - 1, coordX + size - 1, coordY + size - 1);
+        }
+        if (~isConnected(Cell.left())) {
+            // draw left border
+            do Screen.drawLine(coordX, coordY, coordX, coordY + size - 1);
+        }
+        return;
+    }
+
+    method void fill(boolean color) {
+        var int coordX, coordY;
+        let coordX = x * size;
+        let coordY = y * size;
+        do Screen.setColor(color);
+        do Screen.drawRectangle(coordX, coordY, coordX + size - 1, coordY + size - 1);
+        return;
+    }
+
+    /** Connect cell to the neighbour in given direction */
+    method void connect(int direction) {
+        if ((direction < Cell.top()) | (direction > Cell.left())) { return; }
+        let neighbours[direction] = true;
+        return;
+    }
+    /** Disconnect cell from neighbour in given direction */
+    method void disconnect(int direction) {
+        if ((direction < Cell.top()) | (direction > Cell.left())) { return; }
+        let neighbours[direction] = false;
+        return;
+    }
+    /** Check if the cell is connected to the neighbour */
+    method bool isConnected(int direction) {
+        if ((direction < Cell.top()) | (direction > Cell.left())) { return false; }
+        return neighbours[direction];
+    }
+    /** Check if the cell is visited */
+    method bool isVisited() { return visited; }
+    /** Set the cell as visited */
+    method void setVisited(boolean _visited) { let visited = _visited; return; }
+
+    /** Get the position of the cell in the maze */
+    method int getX() { return x; }
+    method int getY() { return y; }
+}

@@ -1,0 +1,180 @@
+/** Maze Generator for Darkeum game */
+class Maze {
+    field Array grid, dx, dy;
+    field int width, height;
+    field int startX, startY;
+    field int endX, endY;
+    field int cellSize;
+    /** Constructor */
+    constructor Maze new(int w, int h) {
+        var int i, j, randomNumber;
+        var Array cols;
+
+        let cellSize = 16;
+        let width = w;
+        let height = h;
+
+        let startX = 0;
+        let startY = 0;
+        let endX = w - 1;
+        let endY = h - 1;
+
+        let dx = Array.new(4);
+        let dy = Array.new(4);
+        let dx[0] = -1;
+        let dx[1] = 0;
+        let dx[2] = 1;
+        let dx[3] = 0;
+        let dy[0] = 0;
+        let dy[1] = -1;
+        let dy[2] = 0;
+        let dy[3] = 1;
+
+        let grid = Array.new(height);
+        let i = 0;
+        while (i < height) {
+            let cols = Array.new(width);
+            let j = 0;
+            while (j < width) {
+                // init each cell indexed by (i, j) and 16 pixels wide and high
+                let cols[j] = Cell.new(i, j, cellSize);
+                let j = j + 1;
+            }
+            let grid[i] = cols;
+            let i = i + 1;
+        }
+
+        return this;
+    }
+
+    method void dispose() {
+        do grid.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** Draw the maze on the screen */
+    method void draw() {
+        var int i, j;
+        var Cell cell;
+
+        // set color to black
+        do Screen.setColor(true);
+        // draw border
+        let j = width * cellSize - 1;
+        let i = height * cellSize - 1;
+        do Screen.drawLine(0, 0, j, 0); // top border
+        do Screen.drawLine(0, i, j, i); // bottom border
+        do Screen.drawLine(0, 0, 0, i); // left border
+        do Screen.drawLine(j, 0, j, i); // right border
+        // draw the end portal
+        do Graphics.drawEndPortal(endX, endY * cellSize - 1);
+        
+        // set color to white
+        do Screen.setColor(false);
+        let i = 0;
+        while (i < height) {
+            let j = 0;
+            while (j < width) {
+                let cell = getCell(j, i);
+                do cell.draw();
+                let j = j + 1;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+    /** Reset the maze */
+    method void reset() {
+        var int i, j;
+        var Cell cell;
+        let i = 0;
+        while (i < height) {
+            let j = 0;
+            while (j < width) {
+                let cell = getCell(j, i);
+                do cell.reset();
+                let j = j + 1;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+    /** Generate a random maze */
+    method void generate() {
+        var VectorCells open;
+        var Array neighbours;
+        var Cell cell, neighbour;
+        var int i, nx, ny, s;
+        var boolean connectedTop, connectedLeft, connectedBottom, connectedRight;
+        do reset();
+
+        let neighbours = Array.new(4);
+        let open = VectorCells.new();
+        do open.push(getCell(startX, startY));
+        while (~open.isEmpty()) {
+            let cell = open.get(LCGRandom.randRange(0, open.size()-1));
+            if (cell) {     // if cell is not null
+                do cell.setVisited(true);
+                do cell.fill(true);
+                let i = 0;
+                let s = 0;
+                while (i < 4) {
+                    let nx = cell.getX() + dx[i];
+                    let ny = cell.getY() + dy[i];
+                    if (((nx > -1) & (nx < width)) & ((ny > -1) & (ny < height))) {
+                        let neighbour = getCell(nx, ny);
+                        if (~neighbour.isVisited()) {
+                            do open.push(neighbour);
+                        } else {
+                            let connectedTop = cell.isConnected(Cell.top());
+                            let connectedLeft = cell.isConnected(Cell.left());
+                            let connectedBottom = cell.isConnected(Cell.bottom());
+                            let connectedRight = cell.isConnected(Cell.right());
+                            if ((~connectedTop) & (~connectedLeft) & (~connectedBottom) & (~connectedRight)) {
+                                let neighbours[s] = neighbour;
+                                let s = s + 1;
+                            }
+                        }
+                    }
+                    let i = i + 1;
+                }
+                if (s > 0) {
+                    do connect(cell, neighbours[LCGRandom.randRange(0, s-1)]);
+                }
+            }
+            do open.remove(cell);
+        }
+        do open.dispose();
+        return;
+    }
+    /** Connect two adjacent cells  */
+    method void connect(Cell cell1, Cell cell2) {
+        var int direction1, direction2, dx, dy;
+        let dx = cell2.getX() - cell1.getX();
+        let dy = cell2.getY() - cell1.getY();
+        if (dx = 0) {
+            if (dy = 1) { let direction2 = Cell.top(); let direction1 = Cell.bottom(); }
+            if (dy = -1) { let direction2 = Cell.bottom(); let direction1 = Cell.top(); }
+        }
+        if (dy = 0) {
+            if (dx = 1) { let direction2 = Cell.left(); let direction1 = Cell.right(); }
+            if (dx = -1) { let direction2 = Cell.right(); let direction1 = Cell.left(); }
+        }
+        do cell1.connect(direction1);
+        do cell2.connect(direction2);
+        return;
+    }
+
+    /** Get the cell at the given position */
+    method Cell getCell(int x, int y) {
+        var Array cols;
+        let cols = grid[y];
+        return cols[x];
+    }
+
+    /** Check if the given position is exit */
+    method boolean isExit(int x, int y) {
+        return (x = endX) & (y = endY);
+    }
+}

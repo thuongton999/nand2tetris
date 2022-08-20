@@ -1,0 +1,109 @@
+/** Dynamic Array of Cells (like std::vector in C++) */
+class VectorCells {
+    field Array arr;
+    field int size;
+    field int capacity;
+    constructor VectorCells new() {
+        let size = 0;
+        let capacity = 1;
+        let arr = Array.new(1);
+        return this;
+    }
+    method void dispose() {
+        do arr.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** Expand the array if needed */
+    method void expand() {
+        var Array old;
+        // copy old array to new array if size is full
+        if (~(size < capacity)) {
+            // create new array with double the capacity
+            let capacity = capacity * 2;
+            let old = arr;
+            let arr = Array.new(capacity + 1);
+            do VectorCells.replace(arr, old, 0, size);
+        }
+        return;
+    }
+
+    /** Shink the array to save the memory if needed */
+    method void shrink() {
+        var Array old;
+        // if size is less than half the capacity, shrink the array
+        if (~(size > (capacity / 2))) {
+            // create new array with half the capacity
+            let capacity = capacity / 2;
+            let old = arr;
+            let arr = Array.new(capacity + 1);
+            do VectorCells.replace(arr, old, 0, size);
+        }
+        return;
+    }
+
+    /** Replace the elements in the array with the elements in new array */
+    function void replace(Array old, Array new, int from, int to) {
+        var int i;
+        let i = from;
+        while (i < to) {
+            let old[i] = new[i];
+            let i = i + 1;
+        }
+        return;
+    }
+
+    /** Add a new cell to the end of the array */
+    method void push(Cell newCell) {
+        let size = size + 1;
+        do expand();
+        let arr[size-1] = newCell;
+        return;
+    }
+    
+    /** Remove the cell from the array */
+    method void remove(Cell cell) {
+        var int i, j;
+        if (isEmpty()) { return; }
+        let i = 0;
+        while (i < size) {
+            if (arr[i] = cell) {
+                // left shift the elements after the removed element
+                let j = i;
+                while (j < size) {
+                    let arr[j] = arr[j + 1];
+                    let j = j + 1;
+                }
+                let size = size - 1;
+                do shrink();
+                return;
+            }
+            let i = i + 1;
+        }
+        return;
+    } 
+
+    /** Insert a new cell at the given index */
+    method void insert(int index, Cell newCell) {
+        var int i;
+        let size = size + 1;
+        do expand();
+        let i = index;
+        // right shift the elements after the inserted element
+        while (i < size) {
+            let arr[i + 1] = arr[i];
+            let i = i + 1;
+        }
+        // insert the new element
+        let arr[index] = newCell;
+        return;
+    }
+
+    /** Returns the cell at the given index */
+    method Cell get(int index) { return arr[index]; }
+    /** Get the size of the vector */
+    method int size() { return size; }
+    /** Check if the vector is empty */
+    method bool isEmpty() { return size = 0; }
+}

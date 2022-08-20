@@ -1,0 +1,599 @@
+function Maze.new 4
+push constant 10
+call Memory.alloc 1
+pop pointer 0
+push constant 16
+pop this 9
+push argument 0
+pop this 3
+push argument 1
+pop this 4
+push constant 0
+pop this 5
+push constant 0
+pop this 6
+push argument 0
+push constant 1
+sub
+pop this 7
+push argument 1
+push constant 1
+sub
+pop this 8
+push constant 4
+call Array.new 1
+pop this 1
+push constant 4
+call Array.new 1
+pop this 2
+push constant 0
+push this 1
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push this 1
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push this 1
+add
+push constant 1
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push this 1
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+push this 2
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 1
+push this 2
+add
+push constant 1
+neg
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 2
+push this 2
+add
+push constant 0
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 3
+push this 2
+add
+push constant 1
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push this 4
+call Array.new 1
+pop this 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push this 4
+lt
+not
+if-goto WHILE_END0
+push this 3
+call Array.new 1
+pop local 3
+push constant 0
+pop local 1
+label WHILE_EXP1
+push local 1
+push this 3
+lt
+not
+if-goto WHILE_END1
+push local 1
+push local 3
+add
+push local 0
+push local 1
+push this 9
+call Cell.new 3
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP1
+label WHILE_END1
+push local 0
+push this 0
+add
+push local 3
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push pointer 0
+return
+function Maze.dispose 0
+push argument 0
+pop pointer 0
+push this 0
+call Array.dispose 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function Maze.draw 3
+push argument 0
+pop pointer 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 3
+push this 9
+call Math.multiply 2
+push constant 1
+sub
+pop local 1
+push this 4
+push this 9
+call Math.multiply 2
+push constant 1
+sub
+pop local 0
+push constant 0
+push constant 0
+push local 1
+push constant 0
+call Screen.drawLine 4
+pop temp 0
+push constant 0
+push local 0
+push local 1
+push local 0
+call Screen.drawLine 4
+pop temp 0
+push constant 0
+push constant 0
+push constant 0
+push local 0
+call Screen.drawLine 4
+pop temp 0
+push local 1
+push constant 0
+push local 1
+push local 0
+call Screen.drawLine 4
+pop temp 0
+push this 7
+push this 8
+push this 9
+call Math.multiply 2
+push constant 1
+sub
+call Graphics.drawEndPortal 2
+pop temp 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push this 4
+lt
+not
+if-goto WHILE_END0
+push constant 0
+pop local 1
+label WHILE_EXP1
+push local 1
+push this 3
+lt
+not
+if-goto WHILE_END1
+push pointer 0
+push local 1
+push local 0
+call Maze.getCell 3
+pop local 2
+push local 2
+call Cell.draw 1
+pop temp 0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP1
+label WHILE_END1
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Maze.reset 3
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push this 4
+lt
+not
+if-goto WHILE_END0
+push constant 0
+pop local 1
+label WHILE_EXP1
+push local 1
+push this 3
+lt
+not
+if-goto WHILE_END1
+push pointer 0
+push local 1
+push local 0
+call Maze.getCell 3
+pop local 2
+push local 2
+call Cell.reset 1
+pop temp 0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP1
+label WHILE_END1
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Maze.generate 12
+push argument 0
+pop pointer 0
+push pointer 0
+call Maze.reset 1
+pop temp 0
+push constant 4
+call Array.new 1
+pop local 1
+call VectorCells.new 0
+pop local 0
+push local 0
+push pointer 0
+push this 5
+push this 6
+call Maze.getCell 3
+call VectorCells.push 2
+pop temp 0
+label WHILE_EXP0
+push local 0
+call VectorCells.isEmpty 1
+not
+not
+if-goto WHILE_END0
+push local 0
+push constant 0
+push local 0
+call VectorCells.size 1
+push constant 1
+sub
+call LCGRandom.randRange 2
+call VectorCells.get 2
+pop local 2
+push local 2
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 2
+push constant 0
+not
+call Cell.setVisited 2
+pop temp 0
+push local 2
+push constant 0
+not
+call Cell.fill 2
+pop temp 0
+push constant 0
+pop local 4
+push constant 0
+pop local 7
+label WHILE_EXP1
+push local 4
+push constant 4
+lt
+not
+if-goto WHILE_END1
+push local 2
+call Cell.getX 1
+push local 4
+push this 1
+add
+pop pointer 1
+push that 0
+add
+pop local 5
+push local 2
+call Cell.getY 1
+push local 4
+push this 2
+add
+pop pointer 1
+push that 0
+add
+pop local 6
+push local 5
+push constant 1
+neg
+gt
+push local 5
+push this 3
+lt
+and
+push local 6
+push constant 1
+neg
+gt
+push local 6
+push this 4
+lt
+and
+and
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push pointer 0
+push local 5
+push local 6
+call Maze.getCell 3
+pop local 3
+push local 3
+call Cell.isVisited 1
+not
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push local 0
+push local 3
+call VectorCells.push 2
+pop temp 0
+goto IF_END2
+label IF_FALSE2
+push local 2
+call Cell.top 0
+call Cell.isConnected 2
+pop local 8
+push local 2
+call Cell.left 0
+call Cell.isConnected 2
+pop local 9
+push local 2
+call Cell.bottom 0
+call Cell.isConnected 2
+pop local 10
+push local 2
+call Cell.right 0
+call Cell.isConnected 2
+pop local 11
+push local 8
+not
+push local 9
+not
+and
+push local 10
+not
+and
+push local 11
+not
+and
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push local 7
+push local 1
+add
+push local 3
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 7
+push constant 1
+add
+pop local 7
+label IF_FALSE3
+label IF_END2
+label IF_FALSE1
+push local 4
+push constant 1
+add
+pop local 4
+goto WHILE_EXP1
+label WHILE_END1
+push local 7
+push constant 0
+gt
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push pointer 0
+push local 2
+push constant 0
+push local 7
+push constant 1
+sub
+call LCGRandom.randRange 2
+push local 1
+add
+pop pointer 1
+push that 0
+call Maze.connect 3
+pop temp 0
+label IF_FALSE4
+label IF_FALSE0
+push local 0
+push local 2
+call VectorCells.remove 2
+pop temp 0
+goto WHILE_EXP0
+label WHILE_END0
+push local 0
+call VectorCells.dispose 1
+pop temp 0
+push constant 0
+return
+function Maze.connect 4
+push argument 0
+pop pointer 0
+push argument 2
+call Cell.getX 1
+push argument 1
+call Cell.getX 1
+sub
+pop local 2
+push argument 2
+call Cell.getY 1
+push argument 1
+call Cell.getY 1
+sub
+pop local 3
+push local 2
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 3
+push constant 1
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+call Cell.top 0
+pop local 1
+call Cell.bottom 0
+pop local 0
+label IF_FALSE1
+push local 3
+push constant 1
+neg
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+call Cell.bottom 0
+pop local 1
+call Cell.top 0
+pop local 0
+label IF_FALSE2
+label IF_FALSE0
+push local 3
+push constant 0
+eq
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push local 2
+push constant 1
+eq
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+call Cell.left 0
+pop local 1
+call Cell.right 0
+pop local 0
+label IF_FALSE4
+push local 2
+push constant 1
+neg
+eq
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+call Cell.right 0
+pop local 1
+call Cell.left 0
+pop local 0
+label IF_FALSE5
+label IF_FALSE3
+push argument 1
+push local 0
+call Cell.connect 2
+pop temp 0
+push argument 2
+push local 1
+call Cell.connect 2
+pop temp 0
+push constant 0
+return
+function Maze.getCell 1
+push argument 0
+pop pointer 0
+push argument 2
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 0
+push argument 1
+push local 0
+add
+pop pointer 1
+push that 0
+return
+function Maze.isExit 0
+push argument 0
+pop pointer 0
+push argument 1
+push this 7
+eq
+push argument 2
+push this 8
+eq
+and
+return
