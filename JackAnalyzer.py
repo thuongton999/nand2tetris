@@ -355,7 +355,7 @@ class Driver:
         print(f"Compiling {input_dir}")
         for file_name in os.listdir(input_dir):
             if not file_name.endswith('.jack'): continue
-            Driver.compile_file(f'{input_dir}/{file_name}')
+            Driver.compile_file(os.path.join(input_dir, file_name))
 
 def main(*sys_args) -> None:
     if os.path.isdir(sys_args[1]):
