@@ -3,7 +3,7 @@ import os
 import re
 import traceback
 import sys
-clearScreen = lambda: os.system('cls' if os.name == 'nt' else 'clear')
+clear_screen = lambda: os.system('cls' if os.name == 'nt' else 'clear')
 
 def enum(**enums):
     return type('Enum', (), enums)
@@ -12,7 +12,7 @@ TOKEN_TYPE = enum(KEYWORD='keyword', SYMBOL='symbol', IDENTIFIER='identifier', I
 # all tokens and its regex to match
 TOKEN: dict = {
     TOKEN_TYPE.COMMENT: r'(\/\/.*)|(\/\*.*\*\/)|(\/\*[^*]*\*+(?:[^/*][^*]*\*+)*\/)',
-    TOKEN_TYPE.KEYWORD: r'(class|constructor|function|method|field|static|var|int|char|boolean|void|true|false|null|this|let|do|if|else|while|return)',
+    TOKEN_TYPE.KEYWORD: r'(class |constructor |function |method |field |static |var |int |void |let |do |char|boolean|true|false|null|this|if|else|while|return)',
     TOKEN_TYPE.IDENTIFIER: r'([a-zA-Z_][a-zA-Z0-9_]*)',
     TOKEN_TYPE.SYMBOL: r'(\{|\}|\(|\)|\[|\]|\.|,|;|\+|-|\*|\/|&|\||<|>|=|~)',
     TOKEN_TYPE.INT_CONST: r'([0-9]+)',
@@ -91,7 +91,7 @@ class JackTokenizer:
                 if not match: continue
                 cmd = line[match.end():]
                 if token_type == TOKEN_TYPE.COMMENT: break
-                tokens.append((match.group(), token_type))
+                tokens.append((match.group().strip(), token_type))
                 break
         return tokens
 
@@ -132,6 +132,9 @@ class JackTokenizer:
         }
         getter = getter_by_type[self.token_type()]
         return getter()
+
+    def close(self) -> None:
+        self.__input_file.close()
 
 class JackAnalyzer:
     __input_file: TextIOWrapper
@@ -206,7 +209,7 @@ class JackAnalyzer:
 
     def compile_parameter_list(self) -> None:
         self.__parse_tree_xml.open_tag('parameterList')
-        while self.__expect_token(TOKEN_TYPE.KEYWORD, 'int', 'char', 'boolean'):
+        while self.__expect_token(TOKEN_TYPE.KEYWORD, 'int', 'char', 'boolean') or self.__expect_token(TOKEN_TYPE.IDENTIFIER, self.__tokenizer.identifier()):
             if not self.__expect_token(TOKEN_TYPE.IDENTIFIER, self.__tokenizer.identifier()): break
             if not self.__expect_token(TOKEN_TYPE.SYMBOL, ','): break
         self.__parse_tree_xml.close_tag('parameterList')
@@ -294,7 +297,7 @@ class JackAnalyzer:
 
     def compile_return(self) -> None:
         self.__parse_tree_xml.open_tag('returnStatement')
-        self.__expect_token(TOKEN_TYPE.KEYWORD, 'return')
+        if not self.__expect_token(TOKEN_TYPE.KEYWORD, 'return'): return
         if self.__expect_token(TOKEN_TYPE.SYMBOL, ';'):
             pass
         else:
@@ -364,5 +367,5 @@ def main(*sys_args) -> None:
         With(sys_args[1]).do(Driver.compile_file)#.do(CodeGenerator.generate_vm_directory)
     
 if __name__ == "__main__":
-    clearScreen()
+    clear_screen()
     With(*sys.argv).do(main)
